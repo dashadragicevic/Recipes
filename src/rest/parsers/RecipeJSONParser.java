@@ -2,8 +2,11 @@ package rest.parsers;
 
 import java.util.Collection;
 
+import util.Constants;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 import domain.AggregateRating;
 import domain.Energy;
@@ -18,43 +21,60 @@ public class RecipeJSONParser {
 	public static JsonObject serialize(Recipe r){
 		JsonObject recipeJson = new JsonObject();
 		
+		recipeJson.addProperty("uri", r.getUri().toString());
 		recipeJson.addProperty("url", r.getUrl().toString());
 		recipeJson.addProperty("name", r.getName());
 		recipeJson.addProperty("author", r.getAuthor());
 		recipeJson.addProperty("datePublished", r.getDatePublished().toString());
-		recipeJson.addProperty("recipeCategory", r.getRecipeCategory().toString());			
+		JsonArray recipeCategories = new JsonArray();
+		for (String category : r.getRecipeCategory()) {
+			recipeCategories.add(new JsonPrimitive(category));
+		}
+		recipeJson.add("recipeCategory", recipeCategories);
 		if(r.getImage()!=null)
 			recipeJson.addProperty("image", r.getImage().toString());
 		recipeJson.addProperty("totalTime", r.getTotalTime());
 		recipeJson.addProperty("prepTime", r.getPrepTime());
 		recipeJson.addProperty("cookTime", r.getCookTime());
 		recipeJson.addProperty("description", r.getDescription());
-		recipeJson.addProperty("recipeYield", r.getRecipeYield().toString());			
-		recipeJson.addProperty("ingredients", r.getIngredients().toString());
+		JsonArray recipeYields = new JsonArray();
+		for (String yield : r.getRecipeYield()) {
+			recipeYields.add(new JsonPrimitive(yield));
+		}
+		recipeJson.add("recipeYield", recipeYields);
+		JsonArray recipeIngredients = new JsonArray();
+		for (String ingredient : r.getIngredients()) {
+			recipeIngredients.add(new JsonPrimitive(ingredient));
+		}
+		recipeJson.add("ingredients", recipeIngredients);
 		recipeJson.addProperty("recipeInstructions", r.getRecipeInstructions());
-		recipeJson.add("reviews", serializeReview(r.getReviews()));
+		if(!r.getReviews().isEmpty())
+			recipeJson.addProperty("reviews", r.getUri().toString()+"/reviews");
 		recipeJson.add("aggregateRating", serializeAggregateRating(r.getAggregateRating()));
 		recipeJson.add("nutrition", serializeNutritionInformation(r.getNutrition()));
 		
 		return recipeJson;
 	}
 	
-	public static JsonArray serializeReview(Collection<Review> rev){
+	public static JsonObject serializeReview(Collection<Review> rev, String id){
+		JsonObject reviewsJson = new JsonObject();
+		
+		reviewsJson.addProperty("uri", Constants.NS + id + "/reviews");
+		reviewsJson.addProperty("recipe", Constants.NS + id);		
 		JsonArray reviews = new JsonArray();
 		for (Review r : rev) {
-			JsonObject json = new JsonObject();
-			
+			JsonObject json = new JsonObject();			
 			json.addProperty("about", r.getAbout());
 			json.addProperty("author", r.getAuthor());
 			json.addProperty("datePublished", r.getDatePublished().toString());
 			json.addProperty("description", r.getDescription());
 			if(r.getReviewRating()!=null)
 				json.add("reviewRating", serializeReviewRating(r.getReviewRating()));
-			
 			reviews.add(json);
 		}
+		reviewsJson.add("reviews", reviews);
 				
-		return reviews;
+		return reviewsJson;
 	}
 	
 	public static JsonObject serializeReviewRating(Rating r){
@@ -109,28 +129,5 @@ public class RecipeJSONParser {
 				
 		return json;
 	}
-/*
-	public static Recipe parse(String jsonString) {
-		
-		JsonObject recipeJson = (JsonObject) new JsonParser().parse(jsonString);
-		
-		Recipe r = new Recipe();
-		
-		if (recipeJson.get("id") != null) {
-			String idString = recipeJson.get("id").getAsString();
-			r.setId(Long.parseLong(idString));
-		}
-		
-		String name = recipeJson.get("name").getAsString();
-		r.setName(name);
-		
-		String price = recipeJson.get("price").getAsString();
-		r.setPrice(Double.parseDouble(price));
-		
-		String currency = recipeJson.get("currency").getAsString();
-		r.setCurrency(currency);
-		
-		return r;
-	}
-*/
+
 }

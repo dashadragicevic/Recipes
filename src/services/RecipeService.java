@@ -3,6 +3,7 @@ package services;
 import java.util.Collection;
 
 import domain.Recipe;
+import domain.Review;
 
 public interface RecipeService {
 	
@@ -12,4 +13,8 @@ public interface RecipeService {
 			String minSodium, String maxSodium, String minFat, String maxFat, String minFiber, String maxFiber, 
 			String minSugar, String maxSugar, String minProtein, String maxProtein, String minCalories, String maxCalories);
 
+	Recipe getRecipe(String id);
+	
+	Collection<Review> getReviewsForRecipe(String id);
+	
 }

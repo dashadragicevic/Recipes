@@ -2,7 +2,10 @@ package services;
 
 import java.util.Collection;
 
+import util.Constants;
+
 import domain.Recipe;
+import domain.Review;
 
 public class RecipeServiceImpl implements RecipeService {
 
@@ -21,6 +24,20 @@ public class RecipeServiceImpl implements RecipeService {
 			
 			return recipes;		
 			
+		}
+
+		@Override
+		public Recipe getRecipe(String id) {
+			QueryService queryService = new QueryService();
+			Recipe recipe = queryService.getRecipe(Constants.NS+id);
+			return recipe;
+		}
+
+		@Override
+		public Collection<Review> getReviewsForRecipe(String id) {
+			QueryService queryService = new QueryService();
+			Recipe recipe = queryService.getRecipe(Constants.NS+id);
+			return recipe.getReviews();
 		}
 		
 }

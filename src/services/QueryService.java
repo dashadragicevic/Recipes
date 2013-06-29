@@ -382,11 +382,16 @@ public class QueryService {
 		Collection<String> recipeUris = queryExecutor.executeOneVariableSelectSparqlQuery(query, "recipe", DataModelManager.getInstance().getModel());
 
 		for (String string : recipeUris) {
-			Recipe recipe = queryExecutor.getRecipe(string);
+			Recipe recipe = getRecipe(string);
 			recipes.add(recipe);
 		}
 
 		return recipes;
+	}
+	
+	public Recipe getRecipe(String uri){
+		Recipe recipe = queryExecutor.getRecipe(uri);
+		return recipe;
 	}
 
 }

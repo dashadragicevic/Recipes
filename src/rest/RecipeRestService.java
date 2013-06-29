@@ -5,6 +5,7 @@ import java.util.Collection;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
@@ -18,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.hp.hpl.jena.tdb.TDB;
 
 import domain.Recipe;
+import domain.Review;
 
 import rest.parsers.RecipeJSONParser;
 import services.RecipeServiceImpl;
@@ -63,6 +65,34 @@ public class RecipeRestService {
 			
 			return recipeArray.toString();
 		}
+		throw new WebApplicationException(Response.Status.NO_CONTENT);
+	}
+	
+	@GET
+	@Path("{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getRecipe(@PathParam("id") String id){
+		Recipe r = recipeRepository.getRecipe(id);
+		
+		if(r!=null){
+			JsonObject recipeJson = RecipeJSONParser.serialize(r);
+			return recipeJson.toString();
+		}
+		
+		throw new WebApplicationException(Response.Status.NO_CONTENT);
+	}
+	
+	@GET
+	@Path("{id}/reviews")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getRecipeReveiws(@PathParam("id") String id){
+		Collection<Review> reviews = recipeRepository.getReviewsForRecipe(id);
+		
+		if (reviews != null && !reviews.isEmpty()) {
+			JsonObject reviewsJson = RecipeJSONParser.serializeReview(reviews, id);
+			return reviewsJson.toString();
+		}
+		
 		throw new WebApplicationException(Response.Status.NO_CONTENT);
 	}
 

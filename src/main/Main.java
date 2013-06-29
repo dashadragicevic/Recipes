@@ -3,6 +3,7 @@ package main;
 import java.util.Collection;
 
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.tdb.TDB;
 
 import domain.Recipe;
 
@@ -15,15 +16,15 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-			/*
-			Parser.parsePages("http://www.food.com/browse/allrecipes/?letter=123&pg=1");
-			DataModelManager.getInstance().write("Recipes.rdf", "TURTLE");
-			System.out.println("Done parsing.");
-			*/
 			
-			//QueryService qs = new QueryService();
-			//qs.getAllRecipes("", "", "", "", "15min and less", "", "15min and less", "", "", "", "", "", "", "", "", "", "", "",  "", "", "", "", "", "", "", "", "130");		
-			//DataModelManager.getInstance().closeDataModel();
+//			Parser.parsePages("http://www.food.com/browse/allrecipes/?letter=123&pg=1");
+//			DataModelManager.getInstance().write("Recipes.rdf", "TURTLE");
+//			TDB.sync(DataModelManager.getInstance().getDataset());
+//			System.out.println("Done parsing.");
+			
+//			QueryService qs = new QueryService();
+//			qs.getAllRecipes("", "", "", "", "15min and less", "", "15min and less", "", "", "", "", "", "", "", "", "", "", "",  "", "", "", "", "", "", "", "", "130");		
+//			DataModelManager.getInstance().closeDataModel();
 			
 			//RecipeRestService rrs = new RecipeRestService();
 			//rrs.getAllRecipes("", "", "", "", "15min and less", "", "15min and less", "", "", "", "", "", "", "", "", "", "", "",  "", "", "", "", "", "", "", "", "130");

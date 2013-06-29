@@ -31,8 +31,7 @@ public class Parser {
 		String url = recipe.select("span[itemprop=url]").text();
 		if(!url.isEmpty()){
 			rcp.setUrl(new URI(url));
-		}
-		
+		}		
 				
 		String name = recipe.select("h1[itemprop=name]").text();
 		rcp.setName(name);

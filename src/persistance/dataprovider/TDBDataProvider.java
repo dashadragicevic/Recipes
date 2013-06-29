@@ -23,4 +23,8 @@ public class TDBDataProvider implements DataProvider {
 		dataset.close();
 	}
 
+	@Override
+	public Dataset getDataset() {
+		return dataset;
+	}
 }

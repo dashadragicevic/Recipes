@@ -10,6 +10,7 @@ import thewebsemantic.Bean2RDF;
 import thewebsemantic.RDF2Bean;
 import util.Constants;
 
+import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Model;
 
 public class DataModelManager {
@@ -29,7 +30,7 @@ public class DataModelManager {
 		
 		writer = new Bean2RDF(getModel());
 		reader = new RDF2Bean(getModel());
-		//reader.bindAll("domain");
+		
 	}
 	
 	public static synchronized DataModelManager getInstance(){
@@ -69,6 +70,10 @@ public class DataModelManager {
 
 	public synchronized void closeDataModel(){
 		dataProvider.close();
+	}
+	
+	public Dataset getDataset(){
+		return dataProvider.getDataset();
 	}
 
 }
