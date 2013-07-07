@@ -39,5 +39,55 @@ prosečnoj oceni svih komentara.
 
 # 3. Rešenje
 
+Kreirana je aplikacija koja prikuplja meta-podatke o receptima predstavljenim preko Microdata standarda sa web sajta
+[Food.com](http://food.com), na osnovu tih podataka kreira odgovarajuće objekte domenskog modela, a zatim te objekte
+čuva u lokalnu RDF bazu. Aplikacija dalje omogućava pristup sačuvanim podacima pomoću RESTful servisa.
+
+Aplikacija omogućava tri REST servisa:
+
+* **GET /api/recipes** - servis koji vraća podatke o receptima. Opcioni parametri su:
+  * *name* – reč u nazivu recepta
+  * *author* – reč u nazivu autora recepta
+  * *recipeCategory* – kategorije recepta
+  * *hasImage* – samo recepti sa slikom
+  * *totalTime* – ukupno vreme spremanja (priprema i kuvanje)
+  * *prepTime* – ukupno vreme pripreme
+  * *cookTime* – ukupno vreme kuvanja
+  * *ingredients* – glavni sastojci u jelu
+  * *minAggregateRatingValue* – minimalna ocena koju bi recept trebalo da ima
+  * *minCarbs* – minimalna količina ugljenih hidrata (g)
+  * *maxCarbs* – maksimalna količina ugljnih hidrata (g)
+  * *minSatFat* – minimalna količina zasićenih masti (g)
+  * *maxSatFat* – maksimalna količina zasićenih masti (g)
+  * *minCholesterol* – minimalna količina holesterola (mg)
+  * *maxCholesterol* – maksimalna količina holesterola (mg)
+  * *minSodium* – minimalna količina natrijuma (mg)
+  * *maxSodium* – maksimalna količina natrijuma (mg)
+  * *minFat* – minimalna količina masti (g)
+  * *maxFat* – maksimalna količina masti (g)
+  * *minFiber* – minimalna količina vlakana (g)
+  * *maxFiber* – maksimalna količina vlakana (g)
+  * *minSugar* – minimalna količina šećera (g)
+  * *maxSugar* – maksimalna količina šećera (g)
+  * *minProtein* – minimalna količina proteina (g)
+  * *maxProtein* – maksimalna količina protein (g)
+  * *minCalories* – minimalna količina kalorija (cal)
+  * *maxCalories* – maksimalna količina kalorija (cal)
+  
+  Primer poziva ovog servisa:
+
+  > GET/recipes?name=chili&recipeCategory=american&hasImage=yes&ingredients=jalapeno,honey
+  
+* **GET /api/recipes/id** - servis koji vraća podatke o jednom receptu sa zadatim id-jem.
+  
+  Primer poziva ovog servisa:
+
+  > GET/recipes/0517b1e2-e3b3-48b0-8f2f-23af6dc9f646
+  
+* **GET /api/recipes/id/reviews** - servis koji vraća komentare recepta sa zadatim id-jem.
+  
+  Primer poziva ovog servisa:
+
+  > GET/recipes/0517b1e2-e3b3-48b0-8f2f-23af6dc9f646/reviews
 
 # 4. Tehnička realizacija
