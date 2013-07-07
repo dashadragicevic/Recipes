@@ -11,13 +11,15 @@ Dakle, osnovni koraci u izradi ove aplikacije bili su:
 
 - pravljenje web crawlera koji prikuplja stranice sa sajta Food.com,
 - analiziranje svake prikupljene web stranice kako bi se ekstrakovali umetnuti Microdata podaci o receptu,
-- kreiranje RDF baze i čuvanje ekstrakovanih podataka o receptu u skladu sa [RDF vokabularom](http://schema.org/Recipe),
+- kreiranje RDF baze i čuvanje ekstrakovanih podataka o receptu u skladu sa RDF vokabularom,
 - omogućavanje pristupa podacima u bazi pomoću odgovarajućih REST servisa i SPARQL Endpoint-a.
 
 # 2. Domenski model
 
+U skladu sa RDF vokabularom [Recipe](http://schema.org/Recipe) kreiran je domenski model, predstavljen sledećim dijagramom:
 
-
+![Slika 1 - Domenski model](docs/images/model.jpg)
+Slika 1 - Domenski model
 
 # 3. Rešenje
 
