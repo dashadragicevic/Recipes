@@ -1,5 +1,3 @@
-Recipes
-=======
 # 1. Opis problema
 
 Predmet ovog rada je izrada aplikacije koja vrši ekstrakciju struktuiranih podataka o receptima i čuva ih u RDF bazu.
@@ -91,3 +89,8 @@ Aplikacija omogućava tri REST servisa:
   > GET/recipes/0517b1e2-e3b3-48b0-8f2f-23af6dc9f646/reviews
 
 # 4. Tehnička realizacija
+
+Aplikacija je rađena u Javi.
+
+Za analiziranje web stranica i prikupljanje podataka sa njih korišćena je Jsoup biblioteka. U pitanju je biblioteka koja
+omogućava parsiranje HTML stranica pomoću pogodnog API-a za ekstrakciju i manipulaciju podacima.
