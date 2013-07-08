@@ -95,13 +95,16 @@ Aplikacija je rađena u Javi.
 
 Za analiziranje web stranica i prikupljanje podataka sa njih korišćena je [Jsoup](http://jsoup.org/) biblioteka. 
 U pitanju je biblioteka koja omogućava parsiranje HTML stranica pomoću pogodnog API-a za ekstrakciju podataka,
-kao i pretragu i manipulaciju podacima.
+kao i pretragu i manipulaciju podacima. Ona obezbeđuje pristup željenim DOM elementima.
 
 U aplikaciji je korišćena i [Jenabean](https://code.google.com/p/jenabean/) biblioteka, pomoću koje je omogućeno uspešno
-mapiranje Java objekata u RDF putem anotacija.
+mapiranje Java objekata u RDF putem anotacija. Ona pruža mogućnost da se Java klase kreiraju na klasičan način, a zatim
+se dodavanjem odgovarajućih anotacija definiše način na koji će se one mapirati u RDF podatke.
 
 [Jena TDB](http://jena.apache.org/documentation/tdb/) je komponeneta Jena framework-a. Ona se koristi za obezbeđivanje
-perzistencije RDF podataka, tj. njihovo skladištenje, a zatim i izvršavanje SPARQL upita.
+perzistencije RDF podataka, tj. njihovo skladištenje. Jena TDB takođe podržava i izvršavanje SPARQL upita nad sačuvanim
+podacima.
 
 Obezbeđivanje i rad sa RESTful servisima implementiran je pomoću [Jersey](https://jersey.java.net/) framework-a, koji
-olakšava kreiranje servisa u Javi. Web servisi se kreiraju putem anoticija, kojima se definiše putanja do resursa
+olakšava kreiranje servisa u Javi. Web servisi se kreiraju putem anotacija, kojima se definiše vrsta HTTP zahteva
+na koju taj servis odgovara kao i putanja do odgovarajućeg resursa.
