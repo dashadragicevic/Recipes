@@ -2,14 +2,15 @@
 
 Predmet ovog rada je izrada aplikacije koja vrši ekstrakciju struktuiranih podataka o receptima i čuva ih u RDF bazu.
 Recepti se nalaze na web stranici za pretragu recepata [Food.com](http://food.com). Svaki recept sa ovog web sajta opisan je pomoću 
-meta-podataka koji su umetnuti u sam HTML stranice, a sami meta-podaci su definisani pomoću [Microdata](http://en.wikipedia.org/wiki/Microdata_(HTML)) standarda. Ekstrakovane podatke je zatim potrebno sačuvati u RDF 
-repozitorijumu i omogućiti da im se pristupa putem REST servisa i SPARQL Endpoint-a.
+meta-podataka koji su umetnuti u sam HTML stranice, a sami meta-podaci su definisani pomoću [Microdata](http://en.wikipedia.org/wiki/Microdata_(HTML))
+standarda. Ekstrahovane podatke je zatim potrebno sačuvati u RDF repozitorijumu i omogućiti da im se pristupa putem 
+REST servisa i SPARQL Endpoint-a.
 
 Dakle, osnovni zahtevi u izradi ove aplikacije bili su:
 
 - pravljenje web crawlera koji prikuplja stranice sa sajta Food.com,
-- analiziranje svake prikupljene web stranice kako bi se ekstrakovali umetnuti Microdata podaci o receptu,
-- kreiranje RDF baze i čuvanje ekstrakovanih podataka o receptu u skladu sa RDF vokabularom,
+- analiziranje svake prikupljene web stranice kako bi se ekstrahovali umetnuti Microdata podaci o receptu,
+- kreiranje RDF baze i čuvanje ekstrahovanih podataka o receptu u skladu sa RDF vokabularom,
 - omogućavanje pristupa podacima u bazi pomoću odgovarajućih REST servisa i SPARQL Endpoint-a.
 
 # 2. Domenski model
@@ -92,5 +93,15 @@ Aplikacija omogućava tri REST servisa:
 
 Aplikacija je rađena u Javi.
 
-Za analiziranje web stranica i prikupljanje podataka sa njih korišćena je Jsoup biblioteka. U pitanju je biblioteka koja
-omogućava parsiranje HTML stranica pomoću pogodnog API-a za ekstrakciju i manipulaciju podacima.
+Za analiziranje web stranica i prikupljanje podataka sa njih korišćena je [Jsoup](http://jsoup.org/) biblioteka. 
+U pitanju je biblioteka koja omogućava parsiranje HTML stranica pomoću pogodnog API-a za ekstrakciju podataka,
+kao i pretragu i manipulaciju podacima.
+
+U aplikaciji je korišćena i [Jenabean](https://code.google.com/p/jenabean/) biblioteka, pomoću koje je omogućeno uspešno
+mapiranje Java objekata u RDF putem anotacija.
+
+[Jena TDB](http://jena.apache.org/documentation/tdb/) je komponeneta Jena framework-a. Ona se koristi za obezbeđivanje
+perzistencije RDF podataka, tj. njihovo skladištenje, a zatim i izvršavanje SPARQL upita.
+
+Obezbeđivanje i rad sa RESTful servisima implementiran je pomoću [Jersey](https://jersey.java.net/) framework-a, koji
+olakšava kreiranje servisa u Javi. Web servisi se kreiraju putem anoticija, kojima se definiše putanja do resursa
