@@ -1,50 +1,43 @@
 # 1. Opis problema
 
-Predmet ovog rada je izrada aplikacije koja vrši ekstrakciju struktuiranih podataka o receptima i čuva ih u RDF bazu.
-Recepti se nalaze na web stranici za pretragu recepata [Food.com](http://food.com). Svaki recept sa ovog web sajta opisan je pomoću 
-meta-podataka koji su umetnuti u sam HTML stranice, a sami meta-podaci su definisani pomoću [Microdata](http://en.wikipedia.org/wiki/Microdata_(HTML))
-standarda. Ekstrahovane podatke je zatim potrebno sačuvati u RDF repozitorijumu i omogućiti da im se pristupa putem 
-REST servisa i SPARQL Endpoint-a.
+Predmet ovog rada je izrada aplikacije koja vrši ekstrakciju strukturiranih podataka o receptima i čuva ih u RDF bazu. Recepti se nalaze na web stranici za pretragu recepata [Food.com](http://food.com). Svaki recept sa ovog web sajta opisan je pomoću meta podataka koji su umetnuti u sam HTML stranice, a sami meta podaci su definisani pomoću [Microdata](http://en.wikipedia.org/wiki/Microdata_(HTML))
+standarda. Ekstrahovane podatke je zatim potrebno sačuvati u RDF repozitorijumu i omogućiti da im se pristupa putem REST servisa.
 
-Dakle, osnovni zahtevi u izradi ove aplikacije bili su:
+Osnovni zahtevi u izradi ove aplikacije su:
 
-- pravljenje web crawlera koji prikuplja stranice sa sajta Food.com,
-- analiziranje svake prikupljene web stranice kako bi se ekstrahovali umetnuti Microdata podaci o receptu,
-- kreiranje RDF baze i čuvanje ekstrahovanih podataka o receptu u skladu sa RDF vokabularom,
-- omogućavanje pristupa podacima u bazi pomoću odgovarajućih REST servisa i SPARQL Endpoint-a.
+- kreiranje web crawlera koji prikuplja stranice sa sajta Food.com,
+- analiziranje strukture web stranice recepta kako bi se ekstrahovali umetnuti Microdata podaci o receptu,
+- kreiranje RDF baze i čuvanje ekstrahovanih podataka o receptu u skladu sa [schema.org](http://schema.org/) RDF vokabularom,
+- omogućavanje pristupa podacima u bazi pomoću odgovarajućih REST servisa.
 
 # 2. Domenski model
 
-U skladu sa RDF vokabularom [Recipe](http://schema.org/Recipe) kreiran je domenski model, predstavljen sledećim dijagramom:
+U skladu sa RDF vokabularom [Recipe](http://schema.org/Recipe), kreiran je domenski model, predstavljen sledećim dijagramom:
 
 ![Slika 1 - Domenski model](docs/images/model.jpg)
 Slika 1 - Domenski model
 
-Klasa *Recipe* je klasa koja sadrži osnovne podatke o receptu. Ona vodi računa o adresi recepta, nazivu, autoru, datumu objavljivanja,
+Klasa *Recipe* sadrži osnovne podatke o receptu. Ona poseduje podatke o adresi recepta, nazivu, autoru, datumu objavljivanja,
 kategorijama kojima taj recept pripada, slikama jela, vremenu kuvanja, vremenu pripreme, ukupnom vremenu,opisu recepta,
-neophodnim sastojcima i njihovim količinama, detaljnim uputstvima o spremanju, i količini porcije koja se dobija receptom.
+neophodnim sastojcima i njihovim količinama, detaljnim uputstvima o spremanju, kao i količini porcije koja se dobija receptom.
 
 Klasa *NutritionInformation* sadrži podatke o nutritivnim informacijama datog recepta, konkretno o količini ugljenih hidrata,
 zasićenih masti, holesterola, natrijuma, vlakana, masti, šećera, proteina i kalorija. Količina kalorija iskazuje se
 pomoću klase *Energy*, dok se sve ostale nutritivne informacije izražavaju pomoću klase *Mass*.
 
-Klasa *Review* predstavlja komentar korisnika na određeni recept. Tu se pamte podaci o temi komentara, autoru, datumu
-objavljivanja i opisu, odnosno samom tekstu komentara. Prilikom davanja kometara, korisnik daje i ocenu samog recepta,
-koja se predstavlja klasom *Rating*. Ona sadrži podake o najmanjoj i najvećoj mogućoj oceni, i o oceni koju je dao autor
-komentara.
+Klasa *Review* predstavlja komentar korisnika na određeni recept. Tu se pamte podaci o temi komentara, autoru, datumu objavljivanja i opisu, odnosno samom tekstu komentara. Prilikom davanja kometara, korisnik daje i ocenu samog recepta, koja se predstavlja klasom *Rating*. Ona sadrži podake o najmanjoj i najvećoj mogućoj oceni, kao i o oceni koju je dao autor komentara.
 
-Klasa *AggregateRating* je klasa koja sadrži podatke o trenutnoj oceni recepta, tako što vodi računa o broju komentara i 
-prosečnoj oceni svih komentara.
+Klasa *AggregateRating* sadrži podatke o trenutnoj oceni recepta, tako što vodi računa o broju komentara i prosečnoj oceni svih komentara.
 
 # 3. Rešenje
 
-Kreirana je aplikacija koja prikuplja meta-podatke o receptima predstavljenim preko Microdata standarda sa web sajta
-[Food.com](http://food.com), na osnovu tih podataka kreira odgovarajuće objekte domenskog modela, a zatim te objekte
+Kreirana je aplikacija koja prikuplja meta podatke o receptima predstavljenim preko Microdata standarda sa web sajta
+[Food.com](http://food.com). Na osnovu tih podataka kreira odgovarajuće objekte domenskog modela, a zatim te objekte
 čuva u lokalnu RDF bazu. Aplikacija dalje omogućava pristup sačuvanim podacima pomoću RESTful servisa.
 
-Aplikacija omogućava tri REST servisa:
+Aplikacija pruža tri REST servisa:
 
-* **GET /api/recipes** - servis koji vraća podatke o receptima. Opcioni parametri su:
+* **GET /api/recipes** - vraća podatke o receptima. Opcioni parametri su:
   * *name* – reč u nazivu recepta
   * *author* – reč u nazivu autora recepta
   * *recipeCategory* – kategorije recepta
@@ -77,13 +70,13 @@ Aplikacija omogućava tri REST servisa:
 
   > GET/recipes?name=chili&recipeCategory=american&hasImage=yes&ingredients=jalapeno,honey
   
-* **GET /api/recipes/id** - servis koji vraća podatke o jednom receptu sa zadatim id-jem.
+* **GET /api/recipes/id** - vraća podatke o jednom receptu sa zadatim id-jem.
   
   Primer poziva ovog servisa:
 
   > GET/recipes/0517b1e2-e3b3-48b0-8f2f-23af6dc9f646
   
-* **GET /api/recipes/id/reviews** - servis koji vraća komentare recepta sa zadatim id-jem.
+* **GET /api/recipes/id/reviews** - vraća komentare recepta sa zadatim id-jem.
   
   Primer poziva ovog servisa:
 
@@ -97,14 +90,14 @@ Za analiziranje web stranica i prikupljanje podataka sa njih korišćena je [Jso
 U pitanju je biblioteka koja omogućava parsiranje HTML stranica pomoću pogodnog API-a za ekstrakciju podataka,
 kao i pretragu i manipulaciju podacima. Ona obezbeđuje pristup željenim DOM elementima.
 
-U aplikaciji je korišćena i [Jenabean](https://code.google.com/p/jenabean/) biblioteka, pomoću koje je omogućeno uspešno
-mapiranje Java objekata u RDF putem anotacija. Ona pruža mogućnost da se Java klase kreiraju na klasičan način, a zatim
-se dodavanjem odgovarajućih anotacija definiše način na koji će se one mapirati u RDF podatke.
+U aplikaciji je korišćena i [Jenabean](https://code.google.com/p/jenabean/) biblioteka, pomoću koje je omogućeno jednostavno
+mapiranje Java objekata u RDF putem anotacija. Biblioteka pruža mogućnost da se Java klase kreiraju na klasičan način, a zatim
+se dodavanjem odgovarajućih anotacija definiše način na koji će se one mapirati u RDF klase.
 
-[Jena TDB](http://jena.apache.org/documentation/tdb/) je komponeneta Jena framework-a. Ona se koristi za obezbeđivanje
+[Jena TDB](http://jena.apache.org/documentation/tdb/) je komponeneta Jena framework-a. Koristi se za obezbeđivanje
 perzistencije RDF podataka, tj. njihovo skladištenje. Jena TDB takođe podržava i izvršavanje SPARQL upita nad sačuvanim
 podacima.
 
 Obezbeđivanje i rad sa RESTful servisima implementiran je pomoću [Jersey](https://jersey.java.net/) framework-a, koji
-olakšava kreiranje servisa u Javi. Web servisi se kreiraju putem anotacija, kojima se definiše vrsta HTTP zahteva
+olakšava kreiranje web servisa u Javi. Web servisi se kreiraju putem anotacija, kojima se definiše vrsta HTTP zahteva
 na koju taj servis odgovara kao i putanja do odgovarajućeg resursa.
