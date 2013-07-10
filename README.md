@@ -42,9 +42,13 @@ Aplikacija pruža tri REST servisa:
   * *author* – reč u nazivu autora recepta
   * *recipeCategory* – kategorije recepta
   * *hasImage* – samo recepti sa slikom
+    (moguće vrednosti: yes)
   * *totalTime* – ukupno vreme spremanja (priprema i kuvanje)
+    (moguće vrednosti: 15min and less, 30min and less, 1h and less, 2h and less, 3h and less, 4h and less)
   * *prepTime* – ukupno vreme pripreme
+    (moguće vrednosti: 15min and less, 30min and less, 1h and less, 2h and less, 3h and less, 4h and less)
   * *cookTime* – ukupno vreme kuvanja
+    (moguće vrednosti: 15min and less, 30min and less, 1h and less, 2h and less, 3h and less, 4h and less)
   * *ingredients* – glavni sastojci u jelu
   * *minAggregateRatingValue* – minimalna ocena koju bi recept trebalo da ima
   * *minCarbs* – minimalna količina ugljenih hidrata (g)
